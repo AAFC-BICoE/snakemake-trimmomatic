@@ -1,0 +1,8 @@
+{
+    "datadir": "data",
+    "adapter": "TruSeq3-PE.fa:2:30:10",
+    "leading": 3,
+    "trailing": 3,
+    "minlen": 36,
+    "window": "4:15"
+}
