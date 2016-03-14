@@ -30,11 +30,15 @@
 
 
 """
-# Here is an example of how one would get an environmental variable
-# In this case, the directory of Illumina Adapters
-import os
-HPC_TRIMMOMATIC_ADAPTER = os.environ.get("HPC_TRIMMOMATIC_ADAPTER")
-HPC_TRIMMOMATIC_DIR = os.environ.get("HPC_TRIMMOMATIC_DIR")
+# Code written outside of rules is run on local machine before rule execution
+# Therefore, if we wanted to get local environmental variables we can get them
+# here and refer to them as {HPC_TRIMMOMATIC_ADAPTER} in rule definitions
+# import os
+# HPC_TRIMMOMATIC_ADAPTER = os.environ.get("HPC_TRIMMOMATIC_ADAPTER")
+# HPC_TRIMMOMATIC_DIR = os.environ.get("HPC_TRIMMOMATIC_DIR")
+
+# If we want to refer to environmental variables running on target machines,
+# we can simply use $HPC_TRIMMOMATIC_ADAPTER in the rule definition 
 
 configfile: "config.json"
 workdir: config["datadir"]
@@ -61,7 +65,7 @@ rule preprocess:
     message: "Trimming Illumina adapters from {input.forward} and {input.reverse}"
     shell:
         """
-        java -jar {HPC_TRIMMOMATIC_DIR}/trimmomatic-0.35.jar PE {input.forward} {input.reverse} {output.forward_paired} \
+        java -jar $HPC_TRIMMOMATIC_DIR/trimmomatic-0.35.jar PE {input.forward} {input.reverse} {output.forward_paired} \
         {output.forward_unpaired} {output.reverse_paired} {output.reverse_unpaired} \
-        ILLUMINACLIP:{HPC_TRIMMOMATIC_ADAPTER}/{config[adapter]} LEADING:{config[leading]} TRAILING:{config[trailing]} SLIDINGWINDOW:{config[window]} MINLEN:{config[minlen]}
+        ILLUMINACLIP:$HPC_TRIMMOMATIC_ADAPTER/{config[adapter]} LEADING:{config[leading]} TRAILING:{config[trailing]} SLIDINGWINDOW:{config[window]} MINLEN:{config[minlen]}
         """
