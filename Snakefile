@@ -52,6 +52,7 @@ rule preprocess:
         forward_unpaired = "{sample}_forward_unpaired.fq.gz",
         reverse_paired = "{sample}_reverse_paired.fq.gz",
         reverse_unpaired = "{sample}_reverse_unpaired.fq.gz"
+    message: "Trimming Illumina adapters from {input.forward} and {input.reverse}"
     shell:
         """
         java -jar {HPC_TRIMMOMATIC_DIR}/trimmomatic-0.35.jar PE {input.forward} {input.reverse} {output.forward_paired} \
