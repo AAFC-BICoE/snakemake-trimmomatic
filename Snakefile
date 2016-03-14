@@ -10,17 +10,23 @@
     The following command would be run:
 
     rule preprocess:
-        input: input_reverse.fq.gz, input_forward.fq.gz
-        output: output_forward_paired.fq.gz, output_reverse_paired.fq.gz, output_reverse_unpaired.fq.gz, output_forward_unpaired.fq.gz
+        input: F3D149_S215_L001_R1_001.fastq.gz, F3D149_S215_L001_R2_001.fastq.gz
+        output: F3D149_S215_L001_forward_paired.fq.gz, F3D149_S215_L001_forward_unpaired.fq.gz, F3D149_S215_L001_reverse_unpaired.fq.gz, F3D149_S215_L001_reverse_paired.fq.gz
 
-        java -jar trimmomatic-0.35.jar PE input_forward.fq.gz input_reverse.fq.gz output_forward_paired.fq.gz
-        output_forward_unpaired.fq.gz output_reverse_paired.fq.gz output_reverse_unpaired.fq.gz
-        ILLUMINACLIP:None LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:45
-        
+        java -jar /usr/local/bin/trimmomatic-0.35.jar PE F3D149_S215_L001_R1_001.fastq.gz F3D149_S215_L001_R2_001.fastq.gz F3D149_S215_L001_forward_paired.fq.gz
+        F3D149_S215_L001_forward_unpaired.fq.gz F3D149_S215_L001_reverse_paired.fq.gz F3D149_S215_L001_reverse_unpaired.fq.gz
+        ILLUMINACLIP:/vagrant/snakemake-trimmomatic/adapters/TruSeq3-PE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:45
+    
+    ...
+
+    localrule targets:
+        input: F3D148_S214_L001_forward_paired.fq.gz, F3D150_S216_L001_forward_paired.fq.gz, F3D147_S213_L001_forward_paired.fq.gz, F3D149_S215_L001_forward_paired.fq.gz
+   
     Job counts:
         count   jobs
-        1   preprocess
-        1
+        4   preprocess
+        1   targets
+        5
 
 
 """
