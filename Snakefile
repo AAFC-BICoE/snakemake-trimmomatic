@@ -35,7 +35,9 @@ workdir: config["datadir"]
 
 # The first rule of the file is always executed. 
 # This is useful to specify which files you want to be produced programmatically
+
 samples = {f[:16] for f in os.listdir(".") if f.endswith(".fastq.gz")}
+
 rule targets:
     input:
         expand("{sample}_forward_paired.fq.gz", sample=samples)
@@ -52,7 +54,7 @@ rule preprocess:
         reverse_unpaired = "{sample}_reverse_unpaired.fq.gz"
     shell:
         """
-        java -jar {HPC_TRIMMOMATIC_DIR}/trimmomatic-0.35.jar PE {input.forward} {input.reverse} {output.forward_paired} 
-        {output.forward_unpaired} {output.reverse_paired} {output.reverse_unpaired} 
+        java -jar {HPC_TRIMMOMATIC_DIR}/trimmomatic-0.35.jar PE {input.forward} {input.reverse} {output.forward_paired} \
+        {output.forward_unpaired} {output.reverse_paired} {output.reverse_unpaired} \
         ILLUMINACLIP:{HPC_TRIMMOMATIC_ADAPTER}/{config[adapter]} LEADING:{config[leading]} TRAILING:{config[trailing]} SLIDINGWINDOW:{config[window]} MINLEN:{config[minlen]}
         """
